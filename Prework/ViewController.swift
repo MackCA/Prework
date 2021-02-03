@@ -8,10 +8,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-    
-    
-
     @IBOutlet weak var billAmountTextField: UITextField!
     @IBOutlet weak var tipAmountLabel: UILabel!
     @IBOutlet weak var tipControl: UISegmentedControl!
@@ -19,18 +15,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var updateButton: UIButton!
     @IBOutlet weak var totalLabel: UILabel!
     
-    struct defaultsKeys {
-        static let keyOne = "billKey"
-        
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {         billAmountTextField.becomeFirstResponder() }
+    
     @IBAction func calculateTip(_ sender: Any) {
-        
+        customTipTextField.self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         let formatter = NumberFormatter()
         formatter.usesGroupingSeparator = true
         formatter.numberStyle = .currency
@@ -46,15 +40,13 @@ class ViewController: UIViewController {
             tip = bill * tipPercentages[tipControl.selectedSegmentIndex]
             total = bill + tip
         }else if customTipTextField.text == "" && tipControl.selectedSegmentIndex == 3 {
-            total = bill
+            customTipTextField.self.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.6012597495)
+            total = 0
         }else{
             let customTipText = Double(customTipTextField.text!) ?? 0
             tip = (customTipText/100.0) * bill
-            
             total = tip + bill
         }
-        
-        
         
         //Update tip amount label
         let tipString = formatter.string(from: NSNumber(value: tip))!
